@@ -7,20 +7,17 @@ import {NgxFsModule} from 'ngx-fs';
 
 import { AppComponent } from './app.component';
 import { HttpClientModule, HttpClient, HttpHandler } from '@angular/common/http';
-import { IndependentPropertiesPanelComponent } from './components/independent-properties-panel/independent-properties-panel.component';
 import { CreateCanvasComponent } from './components/create-canvas/create-canvas.component';
-import { InputTextContainerComponent } from './shared/input-text-container/input-text-container.component';
-import { InputTextareaContainerComponent } from './shared/input-textarea-container/input-textarea-container.component';
-import { InputSelectContainerComponent } from './shared/input-select-container/input-select-container.component';
-import { DynamicFormComponent } from './shared/dynamic-form/dynamic-form.component';
-import { PropertiesControlService } from './components/independent-properties-panel/properties-control.service';
-import { DynamicFormPropertyComponent } from './shared/dynamic-form-property/dynamic-form-property.component';
+import { DynamicFormComponent } from './components/dynamic-form/dynamic-form.component';
+import { PropertiesControlService } from './components/independent-properties-panel/services/properties-control.service';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatSelectModule} from '@angular/material/select';
-import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatSliderModule} from '@angular/material/slider';
-import { MultiSelectComponent } from './shared/multi-select/multi-select.component';
+import { DynamicFormPropertyComponent } from './components/dynamic-form-property/dynamic-form-property.component';
+import { IndependentPropertiesPanelComponent } from './components/independent-properties-panel/independent-properties-panel.component';
+import { SharedModule } from './components/shared/shared.module';
+
 
 
 
@@ -29,12 +26,8 @@ import { MultiSelectComponent } from './shared/multi-select/multi-select.compone
     AppComponent,
     IndependentPropertiesPanelComponent,
     CreateCanvasComponent,
-    InputTextContainerComponent,
-    InputTextareaContainerComponent,
-    InputSelectContainerComponent,
     DynamicFormComponent,
     DynamicFormPropertyComponent,
-    MultiSelectComponent
   ],
   imports: [
     BrowserModule,
@@ -45,7 +38,8 @@ import { MultiSelectComponent } from './shared/multi-select/multi-select.compone
     AngularSplitModule.forRoot(),
     BrowserAnimationsModule,
     MatSelectModule,
-    MatSliderModule
+    MatSliderModule,
+    SharedModule
   ],
   providers: [PropertiesControlService],
   bootstrap: [AppComponent]

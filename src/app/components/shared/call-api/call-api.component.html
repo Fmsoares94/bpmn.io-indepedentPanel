@@ -1,0 +1,46 @@
+<div [formGroup]="form">
+  <mat-tab-group>
+    <mat-tab *ngFor='let item of list' label="{{item}}">
+      <div *ngFor='let question of questions'>
+        <div *ngIf="item == question.tab">
+          <div [ngSwitch]="question?.controlType">
+
+            <mat-form-field *ngSwitchCase="'textbox'">
+              <input matInput [formControlName]="question?.key" placeholder="{{question?.label}}">
+            </mat-form-field>
+
+            <div *ngSwitchCase="'list'">
+              <mat-label class="label">{{question.label}}</mat-label>
+              <button mat-button (click)='addSkill(question.key)' >
+                <mat-icon aria-hidden="false" >add</mat-icon>
+              </button>
+              <div *ngFor="let control of getItem(question.key).controls; index as i">
+                <div [formGroup]='control'>
+                  <mat-form-field>
+                    <input matInput formControlName="key" placeholder="Key">
+                  </mat-form-field>
+                  <mat-form-field>
+                    <input matInput formControlName="value" placeholder="Value">
+                  </mat-form-field>
+                  <button mat-button (click)="removeSkill(i, question.key, getItem(question.key).controls[i])">
+                    <mat-icon aria-hidden="false">clear</mat-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <ma t-form-field *ngSwitchCase="'dropdown'" appearance="fill">
+              <mat-label>{{question?.label}}</mat-label>
+              <mat-select>
+                <mat-option *ngFor="let option of question.options" [value]="option">
+                  {{option}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="errorMessage" *ngIf="!isValid">{{question?.label}} is required</div> -->
+    </mat-tab>
+  </mat-tab-group>
+</div>

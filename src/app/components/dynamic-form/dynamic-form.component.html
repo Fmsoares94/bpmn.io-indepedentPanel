@@ -1,0 +1,22 @@
+<div>
+  <form class="form" [formGroup]="form">
+    <div *ngIf="validTab">
+      <app-call-api [questions]='questions' (isTab)='isTab($event)' [form]='form' ></app-call-api>
+    </div>
+
+    <div *ngIf="!validTab">
+      <div *ngFor="let question of questions" class="form-row" >
+        <app-dynamic-form-property *ngIf="questions.length >= 0" [question]='question' [form]='form'></app-dynamic-form-property>
+      </div>
+    </div>
+
+
+    <div class="form-row">
+      <!-- <button type="submit" [disabled]="!form?.valid">Save</button> -->
+    </div>
+  </form>
+
+  <div *ngIf="payLoad" class="form-row">
+    <strong>Saved the following values</strong><br>{{payLoad}}
+  </div>
+</div>

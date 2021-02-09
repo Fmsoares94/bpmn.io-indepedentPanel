@@ -27,6 +27,7 @@ interface Document {
 interface Attributs {
     name?: string
     dropdown?: Array<string>
+    nom_tipo_atii_rotr_jorn_clie?:String
 }
 
 

@@ -4,6 +4,9 @@ import { Modeler, OriginalPropertiesProvider, PropertiesPanelModule, InjectionNa
 import { CustomPropsProvider } from '../../props-provider/CustomPropsProvider';
 import { CustomPaletteProvider } from "../../props-provider/CustomPaletteProvider";
 import { saveAs } from 'file-saver';
+import * as bpmnjs from "../../bpmn-js/bpmn-js";
+import Custom from '../../bpmn-js/custom';
+import customRenderer from '../../bpmn-js/custom/customDraw'
 
 const customModdle = {
   name: "customModdle",
@@ -19,7 +22,7 @@ const customModdle = {
       "extends": [
         "bpmn:UserTask"
       ],
-      "properties": [
+      "properties": [ 
         {
           "name": "worklist",
           "isAttr": true,
@@ -50,10 +53,13 @@ export class CreateCanvasComponent implements OnInit {
       height: '100vh;',
       additionalModules: [
         PropertiesPanelModule,
-
-        // Re-use original bpmn-properties-module, see CustomPropsProvider
+        customRenderer,
         { [InjectionNames.bpmnPropertiesProvider]: ['type', OriginalPropertiesProvider.propertiesProvider[1]] },
-        { [InjectionNames.propertiesProvider]: ['type', CustomPropsProvider] }
+        { [bpmnjs.InjectionNames.originalPaletteProvider]: ['type', bpmnjs.OriginalPaletteProvider] },
+        { [bpmnjs.InjectionNames.paletteProvider]: ['type', Custom.CustomPaletteProvider] },
+        // Re-use original bpmn-properties-module, see CustomPropsProvider
+        { [InjectionNames.propertiesProvider]: ['type', CustomPropsProvider] },
+        { [bpmnjs.InjectionNames.contextPadProvider]: ['type', Custom.CustomContextPadProvider] },
       ]
     });
     this.load()

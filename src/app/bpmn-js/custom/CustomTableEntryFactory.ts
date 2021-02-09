@@ -1,0 +1,331 @@
+// import TableEntryFactory from 'bpmn-js-properties-panel/lib/factory/TableEntryFactory';
+// import cmdHelper from 'bpmn-js-properties-panel/lib/helper/CmdHelper';
+// import entryFieldDescription from 'bpmn-js-properties-panel/lib/factory/EntryFieldDescription';
+// import updateSelection from 'selection-update';
+// import filter from 'lodash/filter';
+// import forEach from 'lodash/forEach';
+// import keys from 'lodash/keys';
+
+
+// const escapeHTML = require('bpmn-js-properties-panel/lib/Utils').escapeHTML,
+//         domQuery = require('min-dom').query,
+//         domAttr = require('min-dom').attr,
+//         domClosest = require('min-dom').closest,
+//         domify = require('min-dom').domify;
+// const map = require('lodash/map');
+
+
+// const TABLE_ROW_DIV_SNIPPET = '<div class="bpp-field-wrapper bpp-table-row">';
+// const DELETE_ROW_BUTTON_SNIPPET = '<button class="clear" data-action="deleteElement">' +
+//                                   '<span>X</span>' +
+//                                 '</button>';
+
+
+// function createInputRowTemplate(properties, canRemove) {
+//     let template = TABLE_ROW_DIV_SNIPPET;
+//     template += createInputTemplate(properties, canRemove);
+//     template += canRemove ? DELETE_ROW_BUTTON_SNIPPET : '';
+//     template += '</div>';
+
+
+//     return template;
+// }
+
+
+// function createInputTemplate(properties, canRemove) {
+//     let columns = properties.length;
+//     let template = '';
+//     forEach(properties, function(prop) {
+//       template += '<input class="bpp-table-row-columns-' + columns + ' ' +
+//                                  (canRemove ? 'bpp-table-row-removable' : '') + '" ' +
+//                          'id="camunda-table-row-cell-input-value" ' +
+//                          'type="text" ' +
+//                          'name="' + escapeHTML(prop) + '" />';
+//     });
+//     return template;
+// }
+
+
+// function createLabelRowTemplate(labels) {
+//     var template = TABLE_ROW_DIV_SNIPPET;
+//     template += createLabelTemplate(labels);
+//     template += '</div>';
+
+
+//     return template;
+// }
+
+
+// function createLabelTemplate(labels) {
+//     var columns = labels.length;
+//     var template = '';
+//     forEach(labels, function(label) {
+//         template += '<label class="bpp-table-row-columns-' + columns + '">' + escapeHTML(label) + '</label>';
+//     });
+//     return template;
+// }
+
+
+// function pick(elements, properties) {
+
+
+//     return map(elements, function(elem) {
+//         var newElement = {};
+//         forEach(properties, function(prop) {            
+//             newElement[prop] = elem[prop] || '';
+//         });
+//         return newElement;
+//     });
+// }
+
+
+// function diff(element, node, values, oldValues, editable) {
+//     return filter(values, function(value, idx) {
+//         return !valueEqual(element, node, value, oldValues[idx], editable, idx);
+//     });
+// }
+
+
+// function valueEqual(element, node, value, oldValue, editable, idx) {
+//     if (value && !oldValue) {
+//         return false;
+//     }
+//     var allKeys = keys(value).concat(keys(oldValue));
+
+
+//     return allKeys.every(function(key) {
+//         var n = value[key] || undefined;
+//         var o = oldValue[key] || undefined;
+//         return !editable(element, node, key, idx) || n === o;
+//     });
+// }
+
+
+// function getEntryNode(node) {
+//    return domClosest(node, '[data-entry]', true);
+// }
+  
+// function getContainer(node) {
+//     return domQuery('div[data-list-entry-container]', node);
+// }
+
+
+// function getSelection(node) {
+//     return {
+//         start: node.selectionStart,
+//         end: node.selectionEnd
+//     };
+// }
+
+
+// function setSelection(node, selection) {
+//     node.selectionStart = selection.start;
+//     node.selectionEnd = selection.end;
+// }
+
+
+// export default function (options) {
+
+
+//     var id = options.id,
+//     modelProperties = options.modelProperties,
+//     labels = options.labels,
+//     description = options.description;
+  
+//     var labelRow = createLabelRowTemplate(labels);
+  
+//     let getElements = options.getElements;
+  
+//     let removeElement = options.removeElement,
+//         canRemove = typeof removeElement === 'function';
+  
+//     let addElement = options.addElement,
+//         canAdd = typeof addElement === 'function',
+//         addLabel = options.addLabel || 'Add Value';
+  
+//     let updateElement = options.updateElement,
+//         canUpdate = typeof updateElement === 'function';
+  
+//     let editable = options.editable || function() { return true; };
+//     let setControlValue = options.setControlValue;
+  
+//     let show = options.show,
+//         canBeShown = typeof show === 'function';
+  
+//     let elements = function(element, node) {
+//       return pick(getElements(element, node), modelProperties);
+//     };
+  
+//     let factory = {
+//       id: id,
+//       html: (canAdd ?
+//         '<div class="bpp-table-add-row" ' + (canBeShown ? 'data-show="show"' : '') + '>' +
+//               '<label>' + escapeHTML(addLabel) + '</label>' +
+//               '<button class="add" data-action="addElement"><span>+</span></button>' +
+//             '</div>' : '') +
+//             '<div class="bpp-table" data-show="showTable">' +
+//               '<div class="bpp-field-wrapper bpp-table-row">' +
+//                  labelRow +
+//               '</div>' +
+//               '<div data-list-entry-container>' +
+//               '</div>' +
+//             '</div>' +
+  
+//             // add description below table entry field
+//             (description ? entryFieldDescription(description) : ''),
+  
+//       get: function(element, node) {
+//         var boElements = elements(element, node);
+  
+//         var invalidValues = this.__invalidValues;
+  
+//         delete this.__invalidValues;
+  
+//         forEach(invalidValues, function(value, idx) {
+//           var element = boElements[idx];
+  
+//           forEach(modelProperties, function(prop) {
+//             element[prop] = value[prop];
+//           });
+//         });
+  
+//         return boElements;
+//       },
+  
+//       set: function(element, values, node) {
+//         var action = this.__action || {};
+//         delete this.__action;
+  
+//         if (action.id === 'delete-element') {
+//           return removeElement(element, node, action.idx);
+//         }
+//         else if (action.id === 'add-element') {
+//           return addElement(element, node);
+//         }
+//         else if (canUpdate) {
+//           var commands = [],
+//               valuesToValidate = values;
+  
+//           if (typeof options.validate !== 'function') {
+//             valuesToValidate = diff(element, node, values, elements(element, node), editable);
+//           }
+  
+//           var self = this;
+  
+//           forEach(valuesToValidate, function(value) {
+//             var validationError,
+//                 idx = values.indexOf(value);
+  
+//             if (typeof options.validate === 'function') {
+//               validationError = options.validate(element, value, node, idx);
+//             }
+  
+//             if (!validationError) {
+//               var cmd = updateElement(element, value, node, idx);
+  
+//               if (cmd) {
+//                 commands.push(cmd);
+//               }
+//             } else {
+//               // cache invalid value in an object by index as key
+//               self.__invalidValues = self.__invalidValues || {};
+//               self.__invalidValues[idx] = value;
+  
+//               // execute a command, which does not do anything
+//               commands.push(cmdHelper.updateProperties(element, {}));
+//             }
+//           });
+  
+//           return commands;
+//         }
+//       },
+//       createListEntryTemplate: function(value, index, selectBox) {
+//         return createInputRowTemplate(modelProperties, canRemove);
+//       },
+  
+//       addElement: function(element, node, event, scopeNode) {
+//         var template = domify(createInputRowTemplate(modelProperties, canRemove));
+  
+//         var container = getContainer(node);
+//         container.appendChild(template);
+  
+//         this.__action = {
+//           id: 'add-element'
+//         };
+  
+//         return true;
+//       },
+  
+//       deleteElement: function(element, node, event, scopeNode) {
+//         var container = getContainer(node);
+//         var rowToDelete = event.delegateTarget.parentNode;
+//         var idx = parseInt(domAttr(rowToDelete, 'data-index'), 10);
+  
+//         container.removeChild(rowToDelete);
+  
+//         this.__action = {
+//           id: 'delete-element',
+//           idx: idx
+//         };
+  
+//         return true;
+//       },
+  
+//       editable: function(element, rowNode, input, prop, value, idx) {
+//         var entryNode = domClosest(rowNode, '[data-entry]');
+//         return editable(element, entryNode, prop, idx);
+//       },
+  
+//       show: function(element, entryNode, node, scopeNode) {
+//         entryNode = getEntryNode(entryNode);
+//         return show(element, entryNode, node, scopeNode);
+//       },
+  
+//       showTable: function(element, entryNode, node, scopeNode) {
+//         entryNode = getEntryNode(entryNode);
+//         var elems = elements(element, entryNode);
+//         return elems && elems.length && (!canBeShown || show(element, entryNode, node, scopeNode));
+//       },
+  
+//       validateListItem: function(element, value, node, idx) {
+//         if (typeof options.validate === 'function') {
+//           return options.validate(element, value, node, idx);
+//         }
+//       },
+//       setControlValue: function(element, rowNode, input, prop, value, idx) {
+//           var entryNode = getEntryNode(rowNode);
+    
+//           var isReadOnly = domAttr(input, 'readonly');
+//           var oldValue = input.value;
+    
+//           var selection;
+    
+//           // prevents input fields from having the value 'undefined'
+//           if (value === undefined) {
+//             value = '';
+//           }
+    
+//           // when the attribute 'readonly' exists, ignore the comparison
+//           // with 'oldValue' and 'value'
+//           if (!!isReadOnly && oldValue === value) {
+//             return;
+//           }
+    
+//           // update selection on undo/redo
+//           if (document.activeElement === input) {
+//             selection = updateSelection(getSelection(input), oldValue, value);
+//           }
+    
+//           //setControlValue(element, entryNode, input, prop, value, idx);
+    
+//           if (selection) {
+//             setSelection(input, selection);
+//           }
+    
+//       }    
+  
+//     };  
+  
+//     return factory;
+  
+// }
