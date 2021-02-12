@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { PropertiesBase } from './propertiesBase';
-import { of } from 'rxjs';
-import { EventPropertiesPanel } from '../../../models/startEvent.model';
+import { of, Subject, BehaviorSubject } from 'rxjs';
+import { EventPropertiesPanel } from '../models/startEvent.model';
 import { CallApi } from './properties/CallApi';
 import { SendMessage } from './properties/SendMessage';
 import { UserRequest } from './properties/UserRequest';
@@ -16,8 +16,7 @@ import { BackToParent } from './properties/BackToParent';
 import { StartFlow } from './properties/StartFlow';
 import { Decision } from './properties/Decision';
 import { EndOfFlow } from './properties/EndOfFlow';
-import elementPanel from '../../../props-provider/CustomPropsProvider'
-
+import { CustomPropsProvider } from '../props-provider/CustomPropsProvider';
 @Injectable({
   providedIn: 'root'
 })
@@ -28,12 +27,14 @@ export class PropertiesService {
   outputDataLock: Array<any> = []
   currentID: string = ''
   element
+  private subject = new BehaviorSubject<any>('');
   constructor() { }
 
   getQuestions(propertiesPanel?: EventPropertiesPanel) {
     let questions: PropertiesBase<string>[] = []
     let validation = false
-    
+    this.subject.next(propertiesPanel)
+
     if (propertiesPanel !== undefined) {
       this.currentID = propertiesPanel.id
       let atrr = propertiesPanel.businessObject.$attrs.nom_tipo_atii_rotr_jorn_clie
@@ -169,20 +170,7 @@ export class PropertiesService {
       id: id,
       value: value
     }
-    let outputDataLock = {
-      id: id,
-      out: `${value.name}_out`
-    }
-    let outputValidation = this.outputDataLock.filter(result => result.id == id).length > 0
-    if (this.outputDataLock.length == 0 || !outputValidation) {
-      this.outputDataLock.push(outputDataLock)
-    } else {
-      this.outputDataLock.forEach((value, index) => {
-        if (value.id == id) {
-          this.outputDataLock[index] = outputDataLock
-        }
-      })
-    }
+    let save = true
 
     let validation = this.save2.filter(result => result.id == id).length > 0
     if (this.save2.length == 0 || !validation) {
@@ -191,21 +179,15 @@ export class PropertiesService {
       this.save2.forEach((value, index) => {
         if (value.id == id) {
           this.save2[index] = result
+          
         }
       })
     }
-    console.log('CHANGE CHANGE')
-    elementPanel.subscribe(a => {
-      console.log('UPDATE POR CHANGE')
-      this.updateCanvasElement(a)
-    })
-
-    // console.log('SAVE 2 ', this.save2)
-    this.save2.forEach(res => {
-      // console.log('VALUE ["method-DEV"]', res.value['method-DEV'])
-    })
+    
   }
-
+getElement(){
+  return this.subject.asObservable()
+}
   updateForm(value: PropertiesBase<string>[], a?: EventPropertiesPanel) {
 
     value.forEach(res => {
@@ -234,6 +216,7 @@ export class PropertiesService {
 
   updateCanvasElement(value: EventPropertiesPanel) {
     this.element = value
+    this.subject.next(value)
     this.save2.forEach(res => {
       // console.log('RES UPDATE CANVAS', res)
       switch (value.businessObject.$attrs.nom_tipo_atii_rotr_jorn_clie) {
@@ -241,7 +224,7 @@ export class PropertiesService {
           let callapi = new CallApi()
           return callapi.update(value, res)
           break;
-      
+
         default:
           break;
       }

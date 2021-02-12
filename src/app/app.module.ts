@@ -9,7 +9,7 @@ import { AppComponent } from './app.component';
 import { HttpClientModule, HttpClient, HttpHandler } from '@angular/common/http';
 import { CreateCanvasComponent } from './components/create-canvas/create-canvas.component';
 import { DynamicFormComponent } from './components/dynamic-form/dynamic-form.component';
-import { PropertiesControlService } from './components/independent-properties-panel/services/properties-control.service';
+import { PropertiesControlService } from './services/properties-control.service';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatSelectModule} from '@angular/material/select';
@@ -17,6 +17,7 @@ import {MatSliderModule} from '@angular/material/slider';
 import { DynamicFormPropertyComponent } from './components/dynamic-form-property/dynamic-form-property.component';
 import { IndependentPropertiesPanelComponent } from './components/independent-properties-panel/independent-properties-panel.component';
 import { SharedModule } from './components/shared/shared.module';
+import { PropertiesService } from './services/properties.service';
 
 
 
@@ -41,7 +42,7 @@ import { SharedModule } from './components/shared/shared.module';
     MatSliderModule,
     SharedModule
   ],
-  providers: [PropertiesControlService],
+  providers: [PropertiesControlService, PropertiesService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

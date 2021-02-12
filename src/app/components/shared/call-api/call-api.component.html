@@ -11,13 +11,13 @@
 
             <div *ngSwitchCase="'list'" >
               <mat-label class="label">{{question.label}}</mat-label>
-              <button mat-button (click)='addSkill(question.key)' >
+              <button mat-button (click)='addSkill(question.key, question.tab)' >
                 <mat-icon aria-hidden="false" >add</mat-icon>
               </button>
-              <div *ngIf='load(question.key, question.value)'></div>
+              <div *ngIf='load(question.key, question.value, question.tab)'></div>
               <div *ngFor="let control of getItem(question.key).controls; index as i;">
                 <div [formGroup]='control'>
-                  <mat-form-field>
+                  <mat-form-field *ngIf="question.tab !== 'general'">
                     <input matInput formControlName="key" placeholder="Key">
                   </mat-form-field>
                   <mat-form-field>

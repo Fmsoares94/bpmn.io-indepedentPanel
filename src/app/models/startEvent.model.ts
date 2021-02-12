@@ -31,6 +31,7 @@ export interface Attributs {
     outputdatalock: string
     methodDEV: string
     addressDEV: string
+    inputDataLoc: string
     contentTypeDEV: string
     bodyDEV: string
     methodHML: string
@@ -44,15 +45,15 @@ export interface Attributs {
     devListHeaders: string
     hmlListHeaders: string
     prdListHeaders: string
-    devListQueryString: Array<{key: '', value: ''}>
-    hmlListQueryString: Array<{key: '', value: ''}>
-    prdListQueryString: Array<{key: '', value: ''}>
-    devListPathString: Array<{key: '', value: ''}>
-    hmlListPathString: Array<{key: '', value: ''}>
-    prdListPathString: Array<{key: '', value: ''}>
-    devListAuthentication: Array<{key: '', value: ''}>
-    hmlListAuthentication: Array<{key: '', value: ''}>
-    prdListAuthentication: Array<{key: '', value: ''}>
+    devListQueryString: string
+    hmlListQueryString: string
+    prdListQueryString: string
+    devListPathString: string
+    hmlListPathString: string
+    prdListPathString: string
+    devListAuthentication: string
+    hmlListAuthentication: string
+    prdListAuthentication: string
 
 }
 

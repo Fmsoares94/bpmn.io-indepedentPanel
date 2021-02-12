@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { PropertiesBase } from '../independent-properties-panel/services/propertiesBase';
+import { PropertiesBase } from '../../services/propertiesBase';
 import { FormGroup } from '@angular/forms';
 import { DynamicService } from '../dynamic-form/dynamic.service';
-import { PropertiesService } from '../independent-properties-panel/services/properties.service';
+import { PropertiesService } from '../../services/properties.service';
 import { debounceTime, distinctUntilChanged } from "rxjs/operators"
 
 @Component({

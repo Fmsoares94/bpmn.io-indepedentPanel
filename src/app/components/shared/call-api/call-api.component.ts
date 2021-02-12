@@ -2,9 +2,9 @@ import { allowPreviousPlayerStylesMerge } from '@angular/animations/browser/src/
 import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { PropertiesService } from '../../independent-properties-panel/services/properties.service';
-import { PropertiesBase } from '../../independent-properties-panel/services/propertiesBase';
-import  _ from 'lodash'
+import { PropertiesService } from '../../../services/properties.service';
+import { PropertiesBase } from '../../../services/propertiesBase';
+import _ from 'lodash'
 
 @Component({
   selector: 'app-call-api',
@@ -26,12 +26,13 @@ export class CallApiComponent implements OnInit {
   ngOnInit() {
   }
 
-  ngOnChanges(changes) {
+  ngOnChanges() {
     this.cont = 0
     let x = (questions) => questions.filter((v, i) => questions.indexOf(v) === i)
     let value = this.questions.map(a => a.tab)
     let ids = this.questions.map(a => a.id)
     this.idElement = ids.filter((item, index) => ids.indexOf(item) !== index)
+    console.log('ID ELEMENT', this.idElement)
     this.questions.map(a => {
       this.skill = this.form.get(a.key)
     })
@@ -41,9 +42,7 @@ export class CallApiComponent implements OnInit {
       distinctUntilChanged()
     )
       .subscribe(res => {
-        for (let entry of this.idElement) {
-          this.dynamicService.getValue(res, entry)
-        }
+          this.dynamicService.getValue(res, this.idElement[0])
       })
   }
 
@@ -54,23 +53,40 @@ export class CallApiComponent implements OnInit {
     });
   }
 
-  load(data, item) {
+  load(data, item, tab) {
+
     if (this.cont == 0) {
       let abc = this.form.get(data) as FormArray
       if (item !== undefined) {
-        item.forEach(element => {
+        let itens = JSON.parse(item)
+        itens.forEach(element => {
           if (abc.value.length == 0) {
-            const group = new FormGroup({
-              key: new FormControl(element.key),
-              value: new FormControl(element.value)
-            });
-            abc.push(group);
+            if (tab == 'general') {
+              const group = new FormGroup({
+                value: new FormControl(element.value)
+              });
+              abc.push(group);
+
+            } else {
+              const group = new FormGroup({
+                key: new FormControl(element.key),
+                value: new FormControl(element.value)
+              });
+              abc.push(group);
+            }
           } else if (abc.value.filter(a => _.isEqual(element, a)).length == 0) {
-            const group = new FormGroup({
-              key: new FormControl(element.key),
-              value: new FormControl(element.value)
-            });
-            abc.push(group);
+            if (tab == 'general') {
+              const group = new FormGroup({
+                value: new FormControl(element.value)
+              });
+              abc.push(group);
+            } else {
+              const group = new FormGroup({
+                key: new FormControl(element.key),
+                value: new FormControl(element.value)
+              });
+              abc.push(group);
+            }
           }
         });
       }
@@ -87,13 +103,20 @@ export class CallApiComponent implements OnInit {
     let abc = this.form.get(data) as FormArray
     return abc
   }
-  addSkill(data) {
-    const group = new FormGroup({
-      key: new FormControl(''),
-      value: new FormControl('')
-    });
+  addSkill(data, tab) {
     let abc = this.form.get(data) as FormArray
-    abc.push(group);
+    if (tab == 'general') {
+      const group = new FormGroup({
+        value: new FormControl('')
+      });
+      abc.push(group);
+    } else {
+      const group = new FormGroup({
+        key: new FormControl(''),
+        value: new FormControl('')
+      });
+      abc.push(group);
+    }
   }
 
   removeSkill(index: number, data) {

@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { PropertiesBase } from '../independent-properties-panel/services/propertiesBase';
+import { PropertiesBase } from '../../services/propertiesBase';
 import { FormGroup } from '@angular/forms';
-import { PropertiesControlService } from '../independent-properties-panel/services/properties-control.service';
+import { PropertiesControlService } from '../../services/properties-control.service';
 
 @Component({
   selector: 'app-dynamic-form',

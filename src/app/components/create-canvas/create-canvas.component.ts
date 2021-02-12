@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Modeler, OriginalPropertiesProvider, PropertiesPanelModule, InjectionNames, OriginalPaletteProvider } from "../../bpmn-js/bpmn-js";
-import { CustomPropsProvider } from '../../props-provider/CustomPropsProvider';
+import { CustomPropsProvider, value } from '../../props-provider/CustomPropsProvider';
 import { CustomPaletteProvider } from "../../props-provider/CustomPaletteProvider";
 import { saveAs } from 'file-saver';
 import * as bpmnjs from "../../bpmn-js/bpmn-js";
 import Custom from '../../bpmn-js/custom';
 import customRenderer from '../../bpmn-js/custom/customDraw'
+import { PropertiesService } from '../../services/properties.service';
 
 const customModdle = {
   name: "customModdle",
@@ -36,14 +37,15 @@ const customModdle = {
 @Component({
   selector: 'app-create-canvas',
   templateUrl: './create-canvas.component.html',
-  styleUrls: ['./create-canvas.component.scss']
+  styleUrls: ['./create-canvas.component.scss'],
+  providers: [PropertiesService]
 })
 export class CreateCanvasComponent implements OnInit {
 
   title = 'Angular/BPMN';
   modeler;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private propertiesService: PropertiesService) {
   }
 
   ngOnInit(): void {
@@ -83,7 +85,8 @@ export class CreateCanvasComponent implements OnInit {
     );
   }
 
-  save(): void {
+  save(): void { 
+    CustomPropsProvider.prototype.getTabs(value)
     this.modeler.saveXML((err: any, xml: any) => console.log(xml))
   }
 }

@@ -1,4 +1,4 @@
-import { EventPropertiesPanel } from "../../../../models/startEvent.model";
+import { EventPropertiesPanel } from "../../models/startEvent.model";
 import { DropdownProperties } from "../elements/properties-dropdown";
 import { List } from "../elements/properties-List";
 import { TextboxProperties } from "../elements/properties-textbox";
@@ -35,6 +35,17 @@ export class CallApi {
                     value: propertiesPanel.businessObject.$attrs.outputdatalock,
                     order: 3,
                     tab: 'general'
+                },
+            ),
+            new List(
+                {
+                    id: propertiesPanel.id,
+                    key: 'inputDataLoc',
+                    label: 'InputDataLoc',
+                    type: 'FormArray',
+                    order: 4,
+                    tab: 'general',
+                    value: propertiesPanel.businessObject.$attrs.inputDataLoc
                 },
             ),
             new DropdownProperties(
@@ -310,17 +321,20 @@ export class CallApi {
         value.businessObject.$attrs.contentTypeDEV = res.value["contentType-DEV"]
         value.businessObject.$attrs.contentTypeHML = res.value["contentType-HML"]
         value.businessObject.$attrs.contentTypePRD = res.value["contentType-PRD"]
-        value.businessObject.$attrs.devListAuthentication = res.value.devListAuthentication
-        value.businessObject.$attrs.devListHeaders = res.value.devListHeaders
-        value.businessObject.$attrs.devListPathString = res.value.devListPathString
-        value.businessObject.$attrs.devListQueryString = res.value.devListQueryString
-        value.businessObject.$attrs.hmlListAuthentication = res.value.hmlListAuthentication
-        value.businessObject.$attrs.hmlListHeaders = res.value.hmlListHeaders
-        value.businessObject.$attrs.hmlListPathString = res.value.hmlListPathString
-        value.businessObject.$attrs.hmlListQueryString = res.value.hmlListQueryString
-        value.businessObject.$attrs.prdListAuthentication = res.value.prdListAuthentication
-        value.businessObject.$attrs.prdListHeaders = res.value.prdListHeaders
-        value.businessObject.$attrs.prdListPathString = res.value.prdListPathString
-        value.businessObject.$attrs.prdListQueryString = res.value.prdListQueryString
+        value.businessObject.$attrs.devListAuthentication = JSON.stringify(res.value.devListAuthentication)
+        value.businessObject.$attrs.devListHeaders = JSON.stringify(res.value.devListHeaders)
+        value.businessObject.$attrs.devListPathString = JSON.stringify(res.value.devListPathString)
+        value.businessObject.$attrs.devListQueryString = JSON.stringify(res.value.devListQueryString)
+        value.businessObject.$attrs.hmlListAuthentication = JSON.stringify(res.value.hmlListAuthentication)
+        value.businessObject.$attrs.hmlListHeaders = JSON.stringify(res.value.hmlListHeaders)
+        value.businessObject.$attrs.hmlListPathString = JSON.stringify(res.value.hmlListPathString)
+        value.businessObject.$attrs.hmlListQueryString = JSON.stringify(res.value.hmlListQueryString)
+        value.businessObject.$attrs.prdListAuthentication = JSON.stringify(res.value.prdListAuthentication)
+        value.businessObject.$attrs.prdListHeaders = JSON.stringify(res.value.prdListHeaders)
+        value.businessObject.$attrs.prdListPathString = JSON.stringify(res.value.prdListPathString)
+        value.businessObject.$attrs.prdListQueryString = JSON.stringify(res.value.prdListQueryString)
+        value.businessObject.$attrs.inputDataLoc = JSON.stringify(res.value.inputDataLoc)
+
+        return value
     }
 }

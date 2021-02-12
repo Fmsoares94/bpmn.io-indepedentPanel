@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import elementPanel from '../../props-provider/CustomPropsProvider'
-import { PropertiesService } from './services/properties.service';
+import { PropertiesService } from '../../services/properties.service';
 import { EventPropertiesPanel } from '../../models/startEvent.model';
-import { PropertiesBase } from './services/propertiesBase';
+import { PropertiesBase } from '../../services/propertiesBase';
 import { Observable, Subject } from 'rxjs';
 import { DynamicService } from '../dynamic-form/dynamic.service';
 @Component({
@@ -22,7 +22,7 @@ export class IndependentPropertiesPanelComponent implements OnInit {
   ngOnChanges(){
     elementPanel.subscribe((a: EventPropertiesPanel) => {
       this.propertiesService.updateCanvasElement(a)
-      console.log('VALOR CANVAS UPDATE', a)
+      
       this.questions$ = this.propertiesService.getQuestions(this.propertiesService.updateCanvasElement(a))
     })
   }
