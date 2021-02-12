@@ -53,7 +53,7 @@ export class CallApi {
                     id: propertiesPanel.id,
                     key: 'method-DEV',
                     label: 'method-DEV',
-                    options: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+                    options: [null,'GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
                     order: 1,
                     tab: 'content',
                     value: propertiesPanel.businessObject.$attrs.methodDEV
@@ -94,7 +94,7 @@ export class CallApi {
                     id: propertiesPanel.id,
                     key: 'method-HML',
                     label: 'method-HML',
-                    options: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+                    options: [null,'GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
                     order: 5,
                     tab: 'content',
                     value: propertiesPanel.businessObject.$attrs.methodHML
@@ -135,7 +135,7 @@ export class CallApi {
                     id: propertiesPanel.id,
                     key: 'method-PRD',
                     label: 'method-PRD',
-                    options: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+                    options: [null,'GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
                     order: 9,
                     tab: 'content',
                     value: propertiesPanel.businessObject.$attrs.methodPRD

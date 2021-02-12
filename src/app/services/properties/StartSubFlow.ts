@@ -1,4 +1,5 @@
 import { DropdownProperties } from "../elements/properties-dropdown";
+import { List } from "../elements/properties-List";
 import { SliderProperties } from "../elements/properties-slider";
 import { TextboxProperties } from "../elements/properties-textbox";
 
@@ -6,35 +7,47 @@ export class StartSubFlow {
 
     get(propertiesPanel) {
         return [
-            new DropdownProperties(
+            new TextboxProperties(
                 {
                     id: propertiesPanel.id,
-                    key: 'inputDataLock',
-                    label: 'Input Data Lock',
-                    options: [],
-                    order: 3
+                    key: 'activityName',
+                    label: 'activityName',
+                    order: 1,
+                    tab: 'general',
+                    value: propertiesPanel.businessObject.name
                 },
             ),
             new TextboxProperties({
                 id: propertiesPanel.id,
-                key: 'name',
-                label: 'Name',
-                value: propertiesPanel.businessObject.name,
+                key: 'activityId',
+                label: 'activityId',
+                value: propertiesPanel.businessObject.id,
                 required: true,
-                order: 2
+                order: 2,
+                tab: 'general',
+                disabled: true
             }),
-            new DropdownProperties(
+            new TextboxProperties(
                 {
                     id: propertiesPanel.id,
                     key: 'outputDataLock',
-                    label: 'Output Data Lock',
-                    options: [],
-                    order: 1
+                    label: 'outputDataLock',
+                    value: propertiesPanel.businessObject.$attrs.outputdatalock,
+                    order: 3,
+                    tab: 'general'
                 },
             ),
-            new SliderProperties({
-
-            })
+            new List(
+                {
+                    id: propertiesPanel.id,
+                    key: 'inputDataLoc',
+                    label: 'InputDataLoc',
+                    type: 'FormArray',
+                    order: 4,
+                    tab: 'general',
+                    value: propertiesPanel.businessObject.$attrs.inputDataLoc
+                },
+            ),
         ];
     }
 }
