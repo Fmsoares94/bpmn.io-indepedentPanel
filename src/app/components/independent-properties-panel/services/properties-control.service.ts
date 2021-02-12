@@ -11,10 +11,12 @@ export class PropertiesControlService {
     let group: any = {};
     questions.forEach(question => {
       group[question.key] =
-        question.type == 'FormArray' ? 
+        question.type == 'FormArray' ?
           new FormArray([]) :
-          question.required ? new FormControl(question.value || '', Validators.required)
-            : new FormControl(question.value || '');
+          question.disabled ? new FormControl({ value: question.value || '', disabled: true }) :
+            question.disabled && question.required ? new FormControl({ value: question.value || '', disabled: true }, Validators.required) :
+              question.required ? new FormControl(question.value || '', Validators.required)
+                : new FormControl(question.value || '');
     });
     return new FormGroup(group);
   }

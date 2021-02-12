@@ -8,6 +8,7 @@ export class PropertiesBase<T> {
   controlType: string;
   type: string;
   tab:string
+  disabled: boolean
   options: { key: string, value: string }[];
 
   constructor(options: {
@@ -20,6 +21,7 @@ export class PropertiesBase<T> {
     tab?:string,
     controlType?: string,
     type?: string
+    disabled?: boolean
   } = {}) {
 
       this.id = options.id
@@ -30,7 +32,8 @@ export class PropertiesBase<T> {
       this.order = options.order === undefined ? 1 : options.order;
       this.controlType = options.controlType || '';
       this.type = options.type || '';
-      this.tab = options.tab || null
+      this.tab = options.tab || null;;
+      this.disabled = options.disabled || false
 
   }
 }

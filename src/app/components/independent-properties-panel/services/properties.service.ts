@@ -16,6 +16,7 @@ import { BackToParent } from './properties/BackToParent';
 import { StartFlow } from './properties/StartFlow';
 import { Decision } from './properties/Decision';
 import { EndOfFlow } from './properties/EndOfFlow';
+import elementPanel from '../../../props-provider/CustomPropsProvider'
 
 @Injectable({
   providedIn: 'root'
@@ -26,19 +27,19 @@ export class PropertiesService {
   save2: Array<any> = []
   outputDataLock: Array<any> = []
   currentID: string = ''
+  element
   constructor() { }
 
   getQuestions(propertiesPanel?: EventPropertiesPanel) {
     let questions: PropertiesBase<string>[] = []
     let validation = false
+    
     if (propertiesPanel !== undefined) {
       this.currentID = propertiesPanel.id
       let atrr = propertiesPanel.businessObject.$attrs.nom_tipo_atii_rotr_jorn_clie
-      console.log('TYPE', atrr)
+      // console.log('TYPE', atrr)
       this.save.forEach(b => {
-        if (b.filter(c => c.id == propertiesPanel.id).length !== 0) {
-          validation = true
-        }
+        validation = b.filter(c => c.id == propertiesPanel.id).length !== 0
       })
       switch (atrr) {
         case 'StartFlow':
@@ -60,7 +61,7 @@ export class PropertiesService {
           }
           break
         case 'CallApi':
-          if (this.save.length == 0 || !validation) {
+          if (true) {
             let callApi = new CallApi()
             questions = callApi.get(propertiesPanel)
           }
@@ -138,6 +139,7 @@ export class PropertiesService {
         questions = this.updateForm(questions, propertiesPanel)
       }
     })
+
     return of(questions.sort((a, b) => a.order - b.order));
   }
 
@@ -192,6 +194,16 @@ export class PropertiesService {
         }
       })
     }
+    console.log('CHANGE CHANGE')
+    elementPanel.subscribe(a => {
+      console.log('UPDATE POR CHANGE')
+      this.updateCanvasElement(a)
+    })
+
+    // console.log('SAVE 2 ', this.save2)
+    this.save2.forEach(res => {
+      // console.log('VALUE ["method-DEV"]', res.value['method-DEV'])
+    })
   }
 
   updateForm(value: PropertiesBase<string>[], a?: EventPropertiesPanel) {
@@ -208,8 +220,8 @@ export class PropertiesService {
       } else {
         this.save2.filter(result => result.id == res.id).forEach((result, index) => {
           switch (res.key) {
-            case 'name':
-              a.businessObject.name = result.value.name
+            case 'activityName':
+              a.businessObject.name = result.value.activityName
               break
             default:
               break;
@@ -221,12 +233,29 @@ export class PropertiesService {
   }
 
   updateCanvasElement(value: EventPropertiesPanel) {
+    this.element = value
     this.save2.forEach(res => {
+      // console.log('RES UPDATE CANVAS', res)
+      switch (value.businessObject.$attrs.nom_tipo_atii_rotr_jorn_clie) {
+        case "CallApi":
+          let callapi = new CallApi()
+          return callapi.update(value, res)
+          break;
+      
+        default:
+          break;
+      }
       if (res.id == value.id) {
-        value.businessObject.name = res.value.name
+
       }
     })
     return value
+  }
+
+  updateElement(value: any) {
+
+    // console.log('SAVE2', this.save2)
+
   }
 
 }

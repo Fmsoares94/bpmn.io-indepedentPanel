@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import elementPanel, { CustomPropsProvider } from '../../props-provider/CustomPropsProvider'
+import elementPanel from '../../props-provider/CustomPropsProvider'
 import { PropertiesService } from './services/properties.service';
 import { EventPropertiesPanel } from '../../models/startEvent.model';
 import { PropertiesBase } from './services/propertiesBase';
@@ -22,6 +22,7 @@ export class IndependentPropertiesPanelComponent implements OnInit {
   ngOnChanges(){
     elementPanel.subscribe((a: EventPropertiesPanel) => {
       this.propertiesService.updateCanvasElement(a)
+      console.log('VALOR CANVAS UPDATE', a)
       this.questions$ = this.propertiesService.getQuestions(this.propertiesService.updateCanvasElement(a))
     })
   }

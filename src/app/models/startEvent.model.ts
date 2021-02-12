@@ -24,10 +24,36 @@ interface Document {
     text: string
 }
 
-interface Attributs {
+export interface Attributs {
     name?: string
     dropdown?: Array<string>
-    nom_tipo_atii_rotr_jorn_clie?:String
+    nom_tipo_atii_rotr_jorn_clie?: String
+    outputdatalock: string
+    methodDEV: string
+    addressDEV: string
+    contentTypeDEV: string
+    bodyDEV: string
+    methodHML: string
+    addressHML: string
+    contentTypeHML: string
+    bodyHML: string
+    methodPRD: string
+    addressPRD: string
+    contentTypePRD: string
+    bodyPRD: string
+    devListHeaders: string
+    hmlListHeaders: string
+    prdListHeaders: string
+    devListQueryString: Array<{key: '', value: ''}>
+    hmlListQueryString: Array<{key: '', value: ''}>
+    prdListQueryString: Array<{key: '', value: ''}>
+    devListPathString: Array<{key: '', value: ''}>
+    hmlListPathString: Array<{key: '', value: ''}>
+    prdListPathString: Array<{key: '', value: ''}>
+    devListAuthentication: Array<{key: '', value: ''}>
+    hmlListAuthentication: Array<{key: '', value: ''}>
+    prdListAuthentication: Array<{key: '', value: ''}>
+
 }
 
 

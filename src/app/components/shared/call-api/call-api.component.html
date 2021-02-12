@@ -6,15 +6,16 @@
           <div [ngSwitch]="question?.controlType">
 
             <mat-form-field *ngSwitchCase="'textbox'">
-              <input matInput [formControlName]="question?.key" placeholder="{{question?.label}}">
+              <input matInput  [readonly]='question.readonly'  [formControlName]="question?.key" placeholder="{{question?.label}}" value ='{{question?.value}}'>
             </mat-form-field>
 
-            <div *ngSwitchCase="'list'">
+            <div *ngSwitchCase="'list'" >
               <mat-label class="label">{{question.label}}</mat-label>
               <button mat-button (click)='addSkill(question.key)' >
                 <mat-icon aria-hidden="false" >add</mat-icon>
               </button>
-              <div *ngFor="let control of getItem(question.key).controls; index as i">
+              <div *ngIf='load(question.key, question.value)'></div>
+              <div *ngFor="let control of getItem(question.key).controls; index as i;">
                 <div [formGroup]='control'>
                   <mat-form-field>
                     <input matInput formControlName="key" placeholder="Key">
@@ -31,7 +32,7 @@
 
             <mat-form-field t-form-field *ngSwitchCase="'dropdown'" appearance="fill">
               <mat-label>{{question?.label}}</mat-label>
-              <mat-select>
+              <mat-select formControlName='{{question.key}}'>
                 <mat-option *ngFor="let option of question.options" [value]="option">
                   {{option}}
                 </mat-option>
