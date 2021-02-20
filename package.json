@@ -27,7 +27,7 @@
     "@angular/router": "7.1.1",
     "angular-split": "^3.0.3",
     "bpmn-js": "^2.5.2",
-    "bpmn-js-properties-panel": "^0.26.2",
+    "bpmn-js-properties-panel": "^0.31.0",
     "camunda-bpmn-moddle": "^4.5.0",
     "core-js": "^2.6.12",
     "file-saver": "^2.0.2",
